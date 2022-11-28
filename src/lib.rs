@@ -98,7 +98,8 @@ mod tests {
 
     #[test]
     fn test_find_max_product_of_2_numbers() {
-        assert_eq!(find_max_product_of_2_numbers(&vec![-10, -3, 5, 6, -2]), 30);
+        assert_eq!(find_max_product_of_2_numbers(&vec![-10, -3, 5, 7, -2]), 35);
+        assert_eq!(find_max_product_of_2_numbers(&vec![-10, -3, 5, 4, -2]), 30);
         assert_eq!(find_max_product_of_2_numbers(&vec![-10, -2, -1]), 20);
         assert_eq!(find_max_product_of_2_numbers(&vec![1, 2, 10]), 20);
         assert_eq!(find_max_product_of_2_numbers(&vec![-5, 10]), -50);
