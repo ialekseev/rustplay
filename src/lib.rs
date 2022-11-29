@@ -80,8 +80,7 @@ fn find_max_length_slice_with_given_sum(vec: &Vec<i32>, sum: i32) -> Option<&[i3
     for (index, elem) in vec.iter().enumerate() {
         current_sum += *elem;
 
-        let sum_to_check = current_sum - sum;
-        if let Some(start_position) = map.get(&sum_to_check) {
+        if let Some(start_position) = map.get(&(current_sum - sum)) {
             let length: usize = index - start_position + 1;
             if length > max_length {
                 max_length = length;
