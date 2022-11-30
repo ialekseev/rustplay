@@ -72,11 +72,11 @@ fn find_max_product_of_2_numbers(vec: &Vec<i32>) -> i32 {
 // Find maximum length slice with a given sum
 fn find_max_length_slice_with_given_sum(vec: &Vec<i32>, sum: i32) -> Option<&[i32]> {
     let mut map: HashMap<i32, usize> = HashMap::from([(0, 0)]);
-
     let mut max_length: usize = 0;
     let mut max_length_start_index: Option<usize> = None;
     let mut max_length_end_index: Option<usize> = None;
     let mut current_sum: i32 = 0;
+
     for (index, elem) in vec.iter().enumerate() {
         current_sum += *elem;
 
@@ -95,6 +95,25 @@ fn find_max_length_slice_with_given_sum(vec: &Vec<i32>, sum: i32) -> Option<&[i3
         (Some(start), Some(end)) => Some(&vec[start..end + 1]),
         _ => None,
     }
+}
+
+// Sort binary vector in linear time
+fn sort_binary_vector_in_linear_time(vec: &mut Vec<u8>) -> &Vec<u8> {
+    let count_0 = vec.iter().fold(0, |acc, e| match e {
+        0 => acc + 1,
+        1 => acc,
+        _ => panic!("The vector is not binary"),
+    });
+
+    for i in 0..vec.len() {
+        if i < count_0 {
+            vec[i] = 0;
+        } else {
+            vec[i] = 1;
+        }
+    }
+
+    return vec;
 }
 
 #[cfg(test)]
@@ -181,5 +200,32 @@ mod tests {
         );
 
         assert_eq!(find_max_length_slice_with_given_sum(&vec![], 10), None);
+    }
+
+    #[test]
+    fn test_sort_binary_vector_in_linear_time() {
+        assert_eq!(
+            sort_binary_vector_in_linear_time(&mut vec![1, 0, 1, 0, 1, 0, 0, 1]),
+            &vec![0, 0, 0, 0, 1, 1, 1, 1]
+        );
+
+        assert_eq!(
+            sort_binary_vector_in_linear_time(&mut vec![0, 0, 1, 0, 1, 1, 0, 1, 0, 0]),
+            &vec![0, 0, 0, 0, 0, 0, 1, 1, 1, 1]
+        );
+
+        assert_eq!(
+            sort_binary_vector_in_linear_time(&mut vec![0, 0, 0]),
+            &vec![0, 0, 0]
+        );
+
+        assert_eq!(
+            sort_binary_vector_in_linear_time(&mut vec![1, 1]),
+            &vec![1, 1]
+        );
+
+        assert_eq!(sort_binary_vector_in_linear_time(&mut vec![0]), &vec![0]);
+
+        assert_eq!(sort_binary_vector_in_linear_time(&mut vec![1]), &vec![1]);
     }
 }
