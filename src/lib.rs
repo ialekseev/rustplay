@@ -69,7 +69,7 @@ fn find_max_product_of_2_numbers(vec: &Vec<i32>) -> i32 {
     }
 }
 
-// Find maximum length slice with a given sum
+// Find a maximum length slice with a given sum
 fn find_max_length_slice_with_given_sum(vec: &Vec<i32>, sum: i32) -> Option<&[i32]> {
     let mut map: HashMap<i32, usize> = HashMap::from([(0, 0)]);
     let mut max_length: usize = 0;
@@ -97,7 +97,7 @@ fn find_max_length_slice_with_given_sum(vec: &Vec<i32>, sum: i32) -> Option<&[i3
     }
 }
 
-// Sort binary vector in linear time
+// Sort a binary vector in linear time
 fn sort_binary_vector_in_linear_time(vec: &mut Vec<u8>) -> &Vec<u8> {
     let count_0 = vec.iter().fold(0, |acc, e| match e {
         0 => acc + 1,
@@ -114,6 +114,27 @@ fn sort_binary_vector_in_linear_time(vec: &mut Vec<u8>) -> &Vec<u8> {
     }
 
     return vec;
+}
+
+fn find_equilibrium_indices_in_vector(vec: &Vec<i32>) -> Vec<usize> {
+    let mut map: HashMap<usize, i32> = HashMap::new();
+
+    let mut right_sum: i32 = 0;
+    (0..vec.len()).rev().for_each(|index| {
+        map.insert(index, right_sum);
+        right_sum = right_sum + vec[index];
+    });
+
+    let mut left_sum: i32 = 0;
+    vec.iter()
+        .enumerate()
+        .filter(|(index, elem)| {
+            let found_equilibrium: bool = left_sum == map[index];
+            left_sum = left_sum + *elem;
+            found_equilibrium
+        })
+        .map(|(i, _)| i)
+        .collect()
 }
 
 #[cfg(test)]
@@ -215,6 +236,11 @@ mod tests {
         );
 
         assert_eq!(
+            sort_binary_vector_in_linear_time(&mut vec![0, 0, 1, 1]),
+            &vec![0, 0, 1, 1]
+        );
+
+        assert_eq!(
             sort_binary_vector_in_linear_time(&mut vec![0, 0, 0]),
             &vec![0, 0, 0]
         );
@@ -227,5 +253,22 @@ mod tests {
         assert_eq!(sort_binary_vector_in_linear_time(&mut vec![0]), &vec![0]);
 
         assert_eq!(sort_binary_vector_in_linear_time(&mut vec![1]), &vec![1]);
+    }
+
+    #[test]
+    fn test_find_equilibrium_indices_in_vector() {
+        assert_eq!(
+            find_equilibrium_indices_in_vector(&vec![0, -3, 5, -4, -2, 3, 1, 0]),
+            vec![0, 3, 7]
+        );
+        assert_eq!(
+            find_equilibrium_indices_in_vector(&vec![2, 3, 5, 1, 2, 2]),
+            vec![2]
+        );
+
+        assert_eq!(find_equilibrium_indices_in_vector(&vec![3]), vec![0]);
+
+        assert_eq!(find_equilibrium_indices_in_vector(&vec![1, 3, 5]), vec![]);
+        assert_eq!(find_equilibrium_indices_in_vector(&vec![1, 2]), vec![])
     }
 }
