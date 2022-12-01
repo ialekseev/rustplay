@@ -133,7 +133,7 @@ fn find_equilibrium_indices_in_vector(vec: &Vec<i32>) -> Vec<usize> {
             left_sum = left_sum + *elem;
             found_equilibrium
         })
-        .map(|(i, _)| i)
+        .map(|(index, _)| index)
         .collect()
 }
 
