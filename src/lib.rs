@@ -172,7 +172,7 @@ fn find_majority_element(vec: &Vec<i32>) -> Option<i32> {
     //second pass:
     let count = vec
         .iter()
-        .fold(0, |count, x| if *x == m { count + 1 } else { count });
+        .fold(0, |count, &x| if x == m { count + 1 } else { count });
     //return Some(m) if actual majority, None otherwise:
     (count > vec.len() / 2).then(|| m)
 }
