@@ -116,6 +116,7 @@ fn sort_binary_vector_in_linear_time(vec: &mut Vec<u8>) -> &Vec<u8> {
     return vec;
 }
 
+// Find equilibrium indices in a vector
 fn find_equilibrium_indices_in_vector(vec: &Vec<i32>) -> Vec<usize> {
     let mut map: HashMap<usize, i32> = HashMap::new();
 
@@ -151,6 +152,29 @@ fn move_zeros_to_end(vec: &mut Vec<i32>) -> &Vec<i32> {
     });
 
     return vec;
+}
+
+// Find majority element (Boyer–Moore Majority Vote Algorithm)
+fn find_majority_element(vec: &Vec<i32>) -> Option<i32> {
+    let mut m = 0;
+    let mut i = 0;
+    //first pass:
+    vec.iter().for_each(|x| {
+        if i == 0 {
+            m = *x;
+            i = 1;
+        } else if m == *x {
+            i = i + 1;
+        } else {
+            i = i - 1;
+        }
+    });
+    //second pass:
+    let count = vec
+        .iter()
+        .fold(0, |count, x| if *x == m { count + 1 } else { count });
+    //return Some(m) if actual majority, None otherwise:
+    (count > vec.len() / 2).then(|| m)
 }
 
 #[cfg(test)]
@@ -305,5 +329,22 @@ mod tests {
         assert_eq!(move_zeros_to_end(&mut vec![1]), &vec![1]);
         assert_eq!(move_zeros_to_end(&mut vec![0]), &vec![0]);
         assert_eq!(move_zeros_to_end(&mut vec![]), &vec![]);
+    }
+
+    #[test]
+    fn test_find_majority_element() {
+        assert_eq!(
+            find_majority_element(&vec![4, 8, 7, 4, 4, 5, 4, 3, 1, 4, 4]),
+            Some(4)
+        );
+        assert_eq!(find_majority_element(&vec![1, 3, 3]), Some(3));
+        assert_eq!(find_majority_element(&vec![1, 3, 3, 3]), Some(3));
+        assert_eq!(find_majority_element(&vec![1]), Some(1));
+        assert_eq!(
+            find_majority_element(&vec![4, 8, 7, 4, 4, 5, 4, 3, 1, 4]),
+            None
+        );
+        assert_eq!(find_majority_element(&vec![1, 2]), None);
+        assert_eq!(find_majority_element(&vec![]), None);
     }
 }
