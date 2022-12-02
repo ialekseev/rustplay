@@ -137,6 +137,22 @@ fn find_equilibrium_indices_in_vector(vec: &Vec<i32>) -> Vec<usize> {
         .collect()
 }
 
+// Move all zeros present in a vector to the end
+fn move_zeros_to_end(vec: &mut Vec<i32>) -> &Vec<i32> {
+    let mut zero_count = 0;
+
+    (0..vec.len()).for_each(|index| {
+        if vec[index] == 0 {
+            zero_count += 1;
+        } else if zero_count > 0 {
+            vec[index - zero_count] = vec[index];
+            vec[index] = 0;
+        }
+    });
+
+    return vec;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -270,5 +286,24 @@ mod tests {
 
         assert_eq!(find_equilibrium_indices_in_vector(&vec![1, 3, 5]), vec![]);
         assert_eq!(find_equilibrium_indices_in_vector(&vec![1, 2]), vec![])
+    }
+
+    #[test]
+    fn test_move_zeros_to_end() {
+        assert_eq!(
+            move_zeros_to_end(&mut vec![5, 0, 0, 2, 3, 0, 4, 0, 1]),
+            &vec![5, 2, 3, 4, 1, 0, 0, 0, 0]
+        );
+
+        assert_eq!(
+            move_zeros_to_end(&mut vec![0, 0, 8, 6, 0, 0]),
+            &vec![8, 6, 0, 0, 0, 0]
+        );
+
+        assert_eq!(move_zeros_to_end(&mut vec![1, 2, 3]), &vec![1, 2, 3]);
+        assert_eq!(move_zeros_to_end(&mut vec![0, 0]), &vec![0, 0]);
+        assert_eq!(move_zeros_to_end(&mut vec![1]), &vec![1]);
+        assert_eq!(move_zeros_to_end(&mut vec![0]), &vec![0]);
+        assert_eq!(move_zeros_to_end(&mut vec![]), &vec![]);
     }
 }
