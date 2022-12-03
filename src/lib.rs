@@ -159,11 +159,11 @@ fn find_majority_element(vec: &Vec<i32>) -> Option<i32> {
     let mut m = 0;
     let mut i = 0;
     //first pass:
-    vec.iter().for_each(|x| {
+    vec.iter().for_each(|&x| {
         if i == 0 {
-            m = *x;
+            m = x;
             i = 1;
-        } else if m == *x {
+        } else if m == x {
             i = i + 1;
         } else {
             i = i - 1;
