@@ -177,6 +177,39 @@ fn find_majority_element(vec: &Vec<i32>) -> Option<i32> {
     (count > vec.len() / 2).then(|| m)
 }
 
+// Find maximum sum slice
+fn find_max_sum_slice(vec: &Vec<i32>) -> &[i32] {
+    if vec.is_empty() {
+        return &[];
+    }
+
+    let mut best_sum = vec[0];
+    let mut best_start_index = 0;
+    let mut best_end_index = 0;
+
+    let mut current_sum = vec[0];
+    let mut current_start_index = 0;
+
+    (1..vec.len()).for_each(|i| {
+        if current_sum <= 0 {
+            //if the current sum is <= 0, we start tracking a new sequence from the current element
+            current_start_index = i;
+            current_sum = vec[i];
+        } else {
+            //otherwise we continue the currently tracked sequence
+            current_sum += vec[i];
+        }
+        //then we update the best sum if the current sum is greater
+        if current_sum >= best_sum {
+            best_sum = current_sum;
+            best_start_index = current_start_index;
+            best_end_index = i;
+        }
+    });
+
+    &vec[best_start_index..best_end_index + 1]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -196,7 +229,7 @@ mod tests {
     }
 
     #[test]
-    fn test_check_if_subarray_with_0_exists() {
+    fn test_check_if_slice_with_0_exists() {
         assert_eq!(check_if_slice_with_0_exists(&vec![4, 2, -3, 1, 6]), true);
         assert_eq!(check_if_slice_with_0_exists(&vec![4, 2, 0, 1, 6]), true);
         assert_eq!(check_if_slice_with_0_exists(&vec![0]), true);
@@ -346,5 +379,38 @@ mod tests {
         );
         assert_eq!(find_majority_element(&vec![1, 2]), None);
         assert_eq!(find_majority_element(&vec![]), None);
+    }
+
+    #[test]
+    fn test_find_max_sum_slice() {
+        assert_eq!(
+            find_max_sum_slice(&vec![-2, 1, -3, 4, -1, 2, 1, -5, 4]),
+            vec![4, -1, 2, 1].as_slice()
+        );
+
+        assert_eq!(
+            find_max_sum_slice(&vec![-4, 1, 2, 3, -5]),
+            vec![1, 2, 3].as_slice()
+        );
+
+        assert_eq!(
+            find_max_sum_slice(&vec![1, 2, 3, -5]),
+            vec![1, 2, 3].as_slice()
+        );
+
+        assert_eq!(
+            find_max_sum_slice(&vec![-5, 1, 2, 3]),
+            vec![1, 2, 3].as_slice()
+        );
+
+        assert_eq!(find_max_sum_slice(&vec![-4, 1, -5]), vec![1].as_slice());
+
+        assert_eq!(find_max_sum_slice(&vec![-4, 0, -5]), vec![0].as_slice());
+
+        assert_eq!(find_max_sum_slice(&vec![-4, -3, -5]), vec![-3].as_slice());
+
+        assert_eq!(find_max_sum_slice(&vec![1]), vec![1].as_slice());
+        assert_eq!(find_max_sum_slice(&vec![-1]), vec![-1].as_slice());
+        assert_eq!(find_max_sum_slice(&vec![]), vec![].as_slice());
     }
 }
