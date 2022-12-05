@@ -210,6 +210,27 @@ fn find_max_sum_slice(vec: &Vec<i32>) -> &[i32] {
     &vec[best_start_index..best_end_index + 1]
 }
 
+// find pairs with provided difference in a vector
+fn find_pairs_with_difference(vec: &Vec<i32>, diff: i32) -> Vec<(i32, i32)> {
+    let mut set = HashSet::new();
+
+    vec.iter().for_each(|e| {
+        set.insert(e);
+    });
+
+    vec.iter()
+        .flat_map(|&e| {
+            let another = e + diff;
+            if set.contains(&another) {
+                set.remove(&another);
+                Some((e, another))
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -407,10 +428,23 @@ mod tests {
 
         assert_eq!(find_max_sum_slice(&vec![-4, 0, -5]), vec![0].as_slice());
 
+        assert_eq!(find_max_sum_slice(&vec![1, 2, 3]), vec![1, 2, 3].as_slice());
+
         assert_eq!(find_max_sum_slice(&vec![-4, -3, -5]), vec![-3].as_slice());
 
         assert_eq!(find_max_sum_slice(&vec![1]), vec![1].as_slice());
         assert_eq!(find_max_sum_slice(&vec![-1]), vec![-1].as_slice());
         assert_eq!(find_max_sum_slice(&vec![]), vec![].as_slice());
+    }
+
+    #[test]
+    fn test_find_pairs_with_difference() {
+        assert_eq!(
+            find_pairs_with_difference(&vec![1, 5, 2, 2, 2, 5, 5, 4], 3),
+            vec![(1, 4), (2, 5)]
+        );
+
+        assert_eq!(find_pairs_with_difference(&vec![1, 5], 4), vec![(1, 5)]);
+        assert_eq!(find_pairs_with_difference(&vec![1], 3), vec![]);
     }
 }
