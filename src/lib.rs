@@ -248,6 +248,43 @@ fn partition_vector_into_2_slices_with_equal_sum(vec: &Vec<i32>) -> Option<(&[i3
     })
 }
 
+fn quick_sort(vec: &mut Vec<i32>) -> &Vec<i32> {
+    fn partition(v: &mut Vec<i32>, left: usize, right: usize) -> usize {
+        let mut i = left;
+        let pivot = v[right];
+
+        for j in left..right + 1 {
+            if v[j] < pivot {
+                let temp = v[i];
+                v[i] = v[j];
+                v[j] = temp;
+                i += 1;
+            }
+        }
+
+        let temp = v[right];
+        v[right] = v[i];
+        v[i] = temp;
+
+        i
+    }
+
+    fn qsort(v: &mut Vec<i32>, left: usize, right: usize) {
+        if left < right {
+            let pivot = partition(v, left, right);
+            if pivot > 0 {
+                qsort(v, left, pivot - 1);
+            }
+            if pivot < right {
+                qsort(v, pivot + 1, right);
+            }
+        }
+    }
+
+    qsort(vec, 0, vec.len() - 1);
+    vec
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -495,5 +532,15 @@ mod tests {
         );
 
         assert_eq!(partition_vector_into_2_slices_with_equal_sum(&vec![]), None);
+    }
+
+    #[test]
+    fn test_quick_sort() {
+        assert_eq!(
+            quick_sort(&mut vec![-4, 1, 25, 50, 8, 10, 23]),
+            &vec![-4, 1, 8, 10, 23, 25, 50]
+        );
+
+        assert_eq!(quick_sort(&mut vec![4, 2, 6, 1]), &vec![1, 2, 4, 6])
     }
 }
