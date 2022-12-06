@@ -231,6 +231,23 @@ fn find_pairs_with_difference(vec: &Vec<i32>, diff: i32) -> Vec<(i32, i32)> {
         .collect()
 }
 
+// partition a vector into 2 slices with equal sum
+fn partition_vector_into_2_slices_with_equal_sum(vec: &Vec<i32>) -> Option<(&[i32], &[i32])> {
+    let sum_all = vec.iter().fold(0, |sum, x| sum + x);
+
+    let mut sum_left = 0;
+    (0..vec.len()).find_map(|i| {
+        let sum_right = sum_all - sum_left;
+        let found = if sum_left == sum_right {
+            Some((&vec[0..i], &vec[i..vec.len()]))
+        } else {
+            None
+        };
+        sum_left += vec[i];
+        found
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -448,5 +465,35 @@ mod tests {
         assert_eq!(find_pairs_with_difference(&vec![1, 5, 6], 2), vec![]);
         assert_eq!(find_pairs_with_difference(&vec![1], 3), vec![]);
         assert_eq!(find_pairs_with_difference(&vec![0], 3), vec![]);
+    }
+
+    #[test]
+    fn test_partition_vector_into_2_slices_with_equal_sum() {
+        assert_eq!(
+            partition_vector_into_2_slices_with_equal_sum(&vec![7, -5, -4, 2, 4]),
+            Some((vec![7, -5].as_slice(), vec![-4, 2, 4].as_slice()))
+        );
+
+        assert_eq!(
+            partition_vector_into_2_slices_with_equal_sum(&vec![7, -6, 3, -5, 1]),
+            Some((vec![].as_slice(), vec![7, -6, 3, -5, 1].as_slice()))
+        );
+
+        assert_eq!(
+            partition_vector_into_2_slices_with_equal_sum(&vec![2, 2]),
+            Some((vec![2].as_slice(), vec![2].as_slice()))
+        );
+
+        assert_eq!(
+            partition_vector_into_2_slices_with_equal_sum(&vec![0]),
+            Some((vec![].as_slice(), vec![0].as_slice()))
+        );
+
+        assert_eq!(
+            partition_vector_into_2_slices_with_equal_sum(&vec![2]),
+            None
+        );
+
+        assert_eq!(partition_vector_into_2_slices_with_equal_sum(&vec![]), None);
     }
 }
