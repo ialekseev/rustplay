@@ -249,29 +249,30 @@ fn partition_vector_into_2_slices_with_equal_sum(vec: &Vec<i32>) -> Option<(&[i3
 }
 
 fn quick_sort(vec: &mut Vec<i32>) -> &Vec<i32> {
-    fn partition(v: &mut Vec<i32>, left: usize, right: usize) -> usize {
-        let mut next_swap_index = left;
-        let pivot = v[right];
+    fn partition(v: &mut Vec<i32>, left_idx: usize, right_idx: usize) -> usize {
+        let pivot_idx = right_idx;
+        let pivot = v[pivot_idx];
+        let mut next_swap_idx = left_idx;
 
-        (left..right + 1).for_each(|index| {
-            if v[index] < pivot {
-                v.swap(next_swap_index, index);
-                next_swap_index += 1;
+        (left_idx..=right_idx).for_each(|idx| {
+            if v[idx] < pivot {
+                v.swap(next_swap_idx, idx);
+                next_swap_idx += 1;
             }
         });
-        v.swap(right, next_swap_index);
+        v.swap(pivot_idx, next_swap_idx);
 
-        next_swap_index
+        next_swap_idx
     }
 
-    fn qsort(v: &mut Vec<i32>, left: usize, right: usize) {
-        if left < right {
-            let pivot = partition(v, left, right);
-            if pivot > 0 {
-                qsort(v, left, pivot - 1);
+    fn qsort(v: &mut Vec<i32>, left_idx: usize, right_idx: usize) {
+        if left_idx < right_idx {
+            let pivot_idx = partition(v, left_idx, right_idx);
+            if pivot_idx > 0 {
+                qsort(v, left_idx, pivot_idx - 1);
             }
-            if pivot < right {
-                qsort(v, pivot + 1, right);
+            if pivot_idx < right_idx {
+                qsort(v, pivot_idx + 1, right_idx);
             }
         }
     }
