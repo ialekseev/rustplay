@@ -249,35 +249,35 @@ fn partition_vector_into_2_slices_with_equal_sum(vec: &Vec<i32>) -> Option<(&[i3
 }
 
 fn quick_sort(vec: &mut Vec<i32>) -> &Vec<i32> {
-    fn partition(v: &mut Vec<i32>, left_idx: usize, right_idx: usize) -> usize {
-        let pivot_idx = right_idx;
-        let pivot = v[pivot_idx];
-        let mut next_swap_idx = left_idx;
+    fn partition(slice: &mut [i32]) -> usize {
+        let pivot_idx = slice.len() - 1;
+        let pivot = slice[pivot_idx];
+        let mut next_swap_idx = 0;
 
-        (left_idx..=right_idx).for_each(|idx| {
-            if v[idx] < pivot {
-                v.swap(next_swap_idx, idx);
+        for idx in 0..slice.len() {
+            if slice[idx] < pivot {
+                slice.swap(next_swap_idx, idx);
                 next_swap_idx += 1;
             }
-        });
-        v.swap(pivot_idx, next_swap_idx);
+        }
+        slice.swap(pivot_idx, next_swap_idx);
 
         next_swap_idx
     }
 
-    fn qsort(v: &mut Vec<i32>, left_idx: usize, right_idx: usize) {
-        if left_idx < right_idx {
-            let pivot_idx = partition(v, left_idx, right_idx);
-            if pivot_idx > 0 {
-                qsort(v, left_idx, pivot_idx - 1);
-            }
-            if pivot_idx < right_idx {
-                qsort(v, pivot_idx + 1, right_idx);
-            }
+    fn qsort(slice: &mut [i32]) {
+        let pivot_idx = partition(slice);
+        let len = slice.len();
+        if pivot_idx > 0 {
+            qsort(&mut slice[0..pivot_idx]);
+        }
+        if pivot_idx < len - 1 {
+            qsort(&mut slice[pivot_idx + 1..len]);
         }
     }
 
-    qsort(vec, 0, vec.len() - 1);
+    qsort(&mut vec[..]);
+
     vec
 }
 
@@ -535,6 +535,11 @@ mod tests {
         assert_eq!(
             quick_sort(&mut vec![-4, 1, 25, 50, 8, 10, 23]),
             &vec![-4, 1, 8, 10, 23, 25, 50]
+        );
+
+        assert_eq!(
+            quick_sort(&mut vec![1, 0, 9, 8, 100, 345, 5, 6, 7, 4, 3, 2, 1]),
+            &vec![0, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100, 345]
         );
 
         assert_eq!(quick_sort(&mut vec![4, 2, 6, 1]), &vec![1, 2, 4, 6])
