@@ -445,6 +445,8 @@ mod tests {
         );
 
         assert_eq!(find_pairs_with_difference(&vec![1, 5], 4), vec![(1, 5)]);
+        assert_eq!(find_pairs_with_difference(&vec![1, 5, 6], 2), vec![]);
         assert_eq!(find_pairs_with_difference(&vec![1], 3), vec![]);
+        assert_eq!(find_pairs_with_difference(&vec![0], 3), vec![]);
     }
 }
