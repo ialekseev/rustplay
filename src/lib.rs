@@ -250,23 +250,18 @@ fn partition_vector_into_2_slices_with_equal_sum(vec: &Vec<i32>) -> Option<(&[i3
 
 fn quick_sort(vec: &mut Vec<i32>) -> &Vec<i32> {
     fn partition(v: &mut Vec<i32>, left: usize, right: usize) -> usize {
-        let mut i = left;
+        let mut next_swap_index = left;
         let pivot = v[right];
 
-        for j in left..right + 1 {
-            if v[j] < pivot {
-                let temp = v[i];
-                v[i] = v[j];
-                v[j] = temp;
-                i += 1;
+        (left..right + 1).for_each(|index| {
+            if v[index] < pivot {
+                v.swap(next_swap_index, index);
+                next_swap_index += 1;
             }
-        }
+        });
+        v.swap(right, next_swap_index);
 
-        let temp = v[right];
-        v[right] = v[i];
-        v[i] = temp;
-
-        i
+        next_swap_index
     }
 
     fn qsort(v: &mut Vec<i32>, left: usize, right: usize) {
