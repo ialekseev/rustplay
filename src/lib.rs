@@ -248,18 +248,19 @@ fn partition_vector_into_2_slices_with_equal_sum(vec: &Vec<i32>) -> Option<(&[i3
     })
 }
 
+// quicksort implementation
 fn quick_sort(vec: &mut Vec<i32>) -> &Vec<i32> {
     fn partition(slice: &mut [i32]) -> usize {
         let pivot_idx = slice.len() - 1;
         let pivot = slice[pivot_idx];
         let mut next_swap_idx = 0;
 
-        for idx in 0..slice.len() {
+        (0..slice.len()).for_each(|idx| {
             if slice[idx] < pivot {
                 slice.swap(next_swap_idx, idx);
                 next_swap_idx += 1;
             }
-        }
+        });
         slice.swap(pivot_idx, next_swap_idx);
 
         next_swap_idx
@@ -276,7 +277,9 @@ fn quick_sort(vec: &mut Vec<i32>) -> &Vec<i32> {
         }
     }
 
-    qsort(&mut vec[..]);
+    if !vec.is_empty() {
+        qsort(&mut vec[..]);
+    }
 
     vec
 }
@@ -538,10 +541,25 @@ mod tests {
         );
 
         assert_eq!(
-            quick_sort(&mut vec![1, 0, 9, 8, 100, 345, 5, 6, 7, 4, 3, 2, 1]),
-            &vec![0, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100, 345]
+            quick_sort(&mut vec![1, 0, 9, 8, 10, 30, 5, 6, 7, 4, 3, 2, 1]),
+            &vec![0, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30]
         );
 
-        assert_eq!(quick_sort(&mut vec![4, 2, 6, 1]), &vec![1, 2, 4, 6])
+        assert_eq!(
+            quick_sort(&mut vec![2, 1, 6, 10, 4, 1, 3, 9, 7]),
+            &vec![1, 1, 2, 3, 4, 6, 7, 9, 10]
+        );
+
+        assert_eq!(quick_sort(&mut vec![4, 1, 3, 9, 7]), &vec![1, 3, 4, 7, 9]);
+
+        assert_eq!(quick_sort(&mut vec![4, 2, 6, 1]), &vec![1, 2, 4, 6]);
+
+        assert_eq!(quick_sort(&mut vec![1, 2, 3]), &vec![1, 2, 3]);
+
+        assert_eq!(quick_sort(&mut vec![1, 2]), &vec![1, 2]);
+
+        assert_eq!(quick_sort(&mut vec![1]), &vec![1]);
+
+        assert_eq!(quick_sort(&mut vec![]), &vec![]);
     }
 }
