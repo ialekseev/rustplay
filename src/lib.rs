@@ -284,6 +284,20 @@ fn quick_sort(vec: &mut Vec<i32>) -> &Vec<i32> {
     vec
 }
 
+// Find the minimum index of a repeating element in a vector
+fn find_min_index_of_repeating_element_in_vector(vec: &Vec<i32>) -> Option<usize> {
+    let mut set = HashSet::new();
+
+    (0..vec.len())
+        .rev()
+        .flat_map(|i| {
+            let found = if set.contains(&vec[i]) { Some(i) } else { None };
+            set.insert(vec[i]);
+            found
+        })
+        .last()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -526,6 +540,11 @@ mod tests {
         );
 
         assert_eq!(
+            partition_vector_into_2_slices_with_equal_sum(&vec![1, 3, 5, 7]),
+            None
+        );
+
+        assert_eq!(
             partition_vector_into_2_slices_with_equal_sum(&vec![2]),
             None
         );
@@ -561,5 +580,26 @@ mod tests {
         assert_eq!(quick_sort(&mut vec![1]), &vec![1]);
 
         assert_eq!(quick_sort(&mut vec![]), &vec![]);
+    }
+
+    #[test]
+    fn test_find_min_index_of_repeating_element_in_vector() {
+        assert_eq!(
+            find_min_index_of_repeating_element_in_vector(&vec![5, 6, 3, 4, 3, 6, 4]),
+            Some(1)
+        );
+        assert_eq!(
+            find_min_index_of_repeating_element_in_vector(&vec![1, 2, 5, 3, 4, 7, 3, 5, 8, 9]),
+            Some(2)
+        );
+        assert_eq!(
+            find_min_index_of_repeating_element_in_vector(&vec![1, 2, 3, 4, 5, 6]),
+            None
+        );
+        assert_eq!(
+            find_min_index_of_repeating_element_in_vector(&vec![1]),
+            None
+        );
+        assert_eq!(find_min_index_of_repeating_element_in_vector(&vec![]), None);
     }
 }
