@@ -298,6 +298,36 @@ fn find_min_index_of_repeating_element_in_vector(vec: &Vec<i32>) -> Option<usize
         .last()
 }
 
+// Find a pivot index in a vector (before which all elements are smaller and after which all are greater)
+fn find_pivot_index_in_vector(vec: &Vec<i32>) -> Option<usize> {
+    let mut map = HashMap::new();
+
+    //first (reversed) traversal: for each index save to the map current min value
+    (0..vec.len()).rev().fold(i32::MAX, |min, i| {
+        map.insert(i, min);
+        if vec[i] < min {
+            vec[i]
+        } else {
+            min
+        }
+    });
+
+    //second traversal: find the pivot index
+    let mut max_left = i32::MIN;
+    (0..vec.len()).find_map(|i| {
+        let min_right = map[&i];
+        let found = if vec[i] > max_left && vec[i] < min_right {
+            Some(i)
+        } else {
+            None
+        };
+        if vec[i] > max_left {
+            max_left = vec[i]
+        }
+        found
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -585,12 +615,16 @@ mod tests {
     #[test]
     fn test_find_min_index_of_repeating_element_in_vector() {
         assert_eq!(
-            find_min_index_of_repeating_element_in_vector(&vec![5, 6, 3, 4, 3, 6, 4]),
+            find_min_index_of_repeating_element_in_vector(&vec![6, 7, 4, 5, 4, 7, 5]),
             Some(1)
         );
         assert_eq!(
             find_min_index_of_repeating_element_in_vector(&vec![1, 2, 5, 3, 4, 7, 3, 5, 8, 9]),
             Some(2)
+        );
+        assert_eq!(
+            find_min_index_of_repeating_element_in_vector(&vec![1, 1]),
+            Some(0)
         );
         assert_eq!(
             find_min_index_of_repeating_element_in_vector(&vec![1, 2, 3, 4, 5, 6]),
@@ -601,5 +635,26 @@ mod tests {
             None
         );
         assert_eq!(find_min_index_of_repeating_element_in_vector(&vec![]), None);
+    }
+
+    #[test]
+    fn test_find_pivot_index_in_vector() {
+        assert_eq!(
+            find_pivot_index_in_vector(&vec![4, 2, 3, 5, 1, 6, 9, 7]),
+            Some(5)
+        );
+        assert_eq!(
+            find_pivot_index_in_vector(&vec![3, 1, 12, 10, 23, 50, 25]),
+            Some(4)
+        );
+        assert_eq!(
+            find_pivot_index_in_vector(&vec![-4, 1, 25, 50, 8, 10, 23]),
+            Some(0)
+        );
+        assert_eq!(find_pivot_index_in_vector(&vec![3, 1, 8, 10]), Some(2));
+        assert_eq!(find_pivot_index_in_vector(&vec![1, 2, 3]), Some(0));
+        assert_eq!(find_pivot_index_in_vector(&vec![1]), Some(0));
+        assert_eq!(find_pivot_index_in_vector(&vec![3, 2, 1]), None);
+        assert_eq!(find_pivot_index_in_vector(&vec![]), None);
     }
 }
