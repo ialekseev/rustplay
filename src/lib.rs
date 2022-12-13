@@ -640,7 +640,7 @@ mod tests {
     #[test]
     fn test_find_pivot_index_in_vector() {
         assert_eq!(
-            find_pivot_index_in_vector(&vec![4, 2, 3, 5, 1, 6, 9, 7]),
+            find_pivot_index_in_vector(&vec![5, 3, 4, 6, 2, 7, 10, 8]),
             Some(5)
         );
         assert_eq!(
