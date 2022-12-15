@@ -355,9 +355,9 @@ fn is_palindrome(mut num: i32) -> bool {
 
 // Reverse a number (no conversion to string is allowed)
 fn reverse_number(mut num: i32) -> i32 {
-    let mut num_reversed = 0;
+    let mut num_reversed: i32 = 0;
     while num != 0 {
-        if i32::MAX / 10 < num_reversed {
+        if i32::MAX / 10 < num_reversed.abs() {
             return 0;
         } else {
             num_reversed = num_reversed * 10 + num % 10;
@@ -718,12 +718,14 @@ mod tests {
 
     #[test]
     fn test_reverse_number() {
-        assert_eq!(reverse_number(123), 321);
+        assert_eq!(reverse_number(1234), 4321);
         assert_eq!(reverse_number(123456789), 987654321);
+        assert_eq!(reverse_number(120), 21);
         assert_eq!(reverse_number(1), 1);
         assert_eq!(reverse_number(0), 0);
         assert_eq!(reverse_number(i32::MAX), 0);
-        assert_eq!(reverse_number(-123), -321);
+        assert_eq!(reverse_number(i32::MIN), 0);
+        assert_eq!(reverse_number(-1234), -4321);
         assert_eq!(reverse_number(-1), -1);
     }
 }
