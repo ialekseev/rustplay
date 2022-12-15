@@ -328,7 +328,7 @@ fn find_pivot_index_in_vector(vec: &Vec<i32>) -> Option<usize> {
     })
 }
 
-// Check if a number is a palindrome (to convertion to string is allowed)
+// Check if a number is a palindrome (no convertion to string is allowed)
 fn is_palindrome(mut num: i32) -> bool {
     match num {
         n if n == 0 => return true,       //0 is palindrome
@@ -351,6 +351,20 @@ fn is_palindrome(mut num: i32) -> bool {
     //[num == 12, num_reversed = 123], the mid number (3)
     //could be ignored in this case.
     num == num_reversed || num == num_reversed / 10
+}
+
+// Reverse a number (no conversion to string is allowed)
+fn reverse_number(mut num: i32) -> i32 {
+    let mut num_reversed = 0;
+    while num != 0 {
+        if i32::MAX / 10 < num_reversed {
+            return 0;
+        } else {
+            num_reversed = num_reversed * 10 + num % 10;
+            num /= 10;
+        }
+    }
+    num_reversed
 }
 
 #[cfg(test)]
@@ -700,5 +714,16 @@ mod tests {
         assert_eq!(is_palindrome(-1), false);
         assert_eq!(is_palindrome(-121), false);
         assert_eq!(is_palindrome(i32::MAX), false);
+    }
+
+    #[test]
+    fn test_reverse_number() {
+        assert_eq!(reverse_number(123), 321);
+        assert_eq!(reverse_number(123456789), 987654321);
+        assert_eq!(reverse_number(1), 1);
+        assert_eq!(reverse_number(0), 0);
+        assert_eq!(reverse_number(i32::MAX), 0);
+        assert_eq!(reverse_number(-123), -321);
+        assert_eq!(reverse_number(-1), -1);
     }
 }
