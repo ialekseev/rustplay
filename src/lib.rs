@@ -329,26 +329,28 @@ fn find_pivot_index_in_vector(vec: &Vec<i32>) -> Option<usize> {
 }
 
 // Check if a number is a palindrome (to convertion to string is allowed)
-fn is_palindrome(num: i32) -> bool {
+fn is_palindrome(mut num: i32) -> bool {
     match num {
         n if n == 0 => return true,       //0 is palindrome
-        n if n < 0 => return false,       //negative num is not palindrome
-        n if n % 10 == 0 => return false, //num ending 0 is not palindrome
+        n if n < 0 => return false,       //negative num is not
+        n if n % 10 == 0 => return false, //num ending 0 is not
         _ => (),
     }
 
-    //reversing the half of the num (reversing the whole number could cause int overflow):
+    //reversing the half of the num (reversing the whole number could
+    //cause int overflow):
     let mut num_reversed = 0;
-    let mut num_remainder = num;
-    while num_remainder > num_reversed {
-        num_reversed = num_reversed * 10 + num_remainder % 10;
-        num_remainder /= 10;
+    while num > num_reversed {
+        num_reversed = num_reversed * 10 + num % 10;
+        num /= 10;
     }
 
-    //if num has an even number of digits e.g. 1221 then [num_remainder == num_reversed == 12].
-    //if num has an odd number of digits e.g. 12321 then [num_remainder == 12, num_reversed = 123],
-    //the mid number (3) could be ignored in this case.
-    num_remainder == num_reversed || num_remainder == num_reversed / 10
+    //if num originally had an even number of digits e.g. 1221 then
+    //[num == num_reversed == 12].
+    //if num had an odd number of digits e.g. 12321 then
+    //[num == 12, num_reversed = 123], the mid number (3)
+    //could be ignored in this case.
+    num == num_reversed || num == num_reversed / 10
 }
 
 #[cfg(test)]
@@ -689,6 +691,7 @@ mod tests {
         assert_eq!(is_palindrome(111), true);
         assert_eq!(is_palindrome(212), true);
         assert_eq!(is_palindrome(22122), true);
+        assert_eq!(is_palindrome(112211), true);
         assert_eq!(is_palindrome(0), true);
 
         assert_eq!(is_palindrome(12), false);
