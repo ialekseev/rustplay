@@ -374,10 +374,9 @@ fn find_longest_common_prefix_string<'a>(vec: &Vec<&'a str>) -> &'a str {
     }
 
     let mut set = HashSet::new();
-    let mut bytes: u16 = 0;
-    vec[0].bytes().for_each(|byte| {
-        bytes += byte as u16;
-        set.insert(bytes);
+    vec[0].bytes().fold(0, |sum, byte| {
+        set.insert(sum + byte as u16);
+        sum + byte as u16
     });
 
     let mut max_byte_index = vec[0].len();
