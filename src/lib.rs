@@ -369,35 +369,22 @@ fn reverse_number(mut num: i32) -> i32 {
 
 // Find the longest common prefix string
 fn find_longest_common_prefix_string<'a>(vec: &Vec<&'a str>) -> &'a str {
-    if vec.len() == 0 || vec.len() == 1 {
+    fn common_prefix<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+        let prefix_end_index = s1
+            .bytes()
+            .zip(s2.bytes())
+            .enumerate()
+            .find(|(_, (byte1, byte2))| byte1 != byte2)
+            .map(|(index, _)| index)
+            .unwrap_or(usize::min(s1.len(), s2.len()));
+        &s1[0..prefix_end_index]
+    }
+
+    if vec.is_empty() {
         return "";
     }
 
-    let mut set = HashSet::new();
-    vec[0].bytes().fold(0, |sum, byte| {
-        set.insert(sum + byte as u16);
-        sum + byte as u16
-    });
-
-    let mut max_byte_index = vec[0].len();
-
-    (1..vec.len()).for_each(|i| {
-        max_byte_index = usize::min(vec[i].len(), max_byte_index);
-
-        let mut bytes: u16 = 0;
-        let mut iter = vec[i].bytes();
-        let mut byte_next = iter.next();
-        for j in 0..max_byte_index {
-            bytes += byte_next.unwrap() as u16;
-            if !set.contains(&bytes) {
-                max_byte_index = j;
-                break;
-            }
-            byte_next = iter.next();
-        }
-    });
-
-    &vec[0][0..max_byte_index]
+    (1..vec.len()).fold(vec[0], |prefix, i| common_prefix(prefix, vec[i]))
 }
 
 #[cfg(test)]
@@ -768,11 +755,6 @@ mod tests {
     #[test]
     fn test_find_longest_common_prefix_string() {
         assert_eq!(
-            find_longest_common_prefix_string(&vec!["flower", "flow", "flight"]),
-            "fl"
-        );
-
-        assert_eq!(
             find_longest_common_prefix_string(&vec!["abcd", "abc"]),
             "abc"
         );
@@ -782,11 +764,11 @@ mod tests {
             "abc"
         );
 
+        assert_eq!(find_longest_common_prefix_string(&vec!["abc"]), "abc");
+
         assert_eq!(
-            find_longest_common_prefix_string(&vec!["dog", "racecar", "car"]),
+            find_longest_common_prefix_string(&vec!["abc", "defg", "hij"]),
             ""
         );
-
-        assert_eq!(find_longest_common_prefix_string(&vec!["dog"]), "");
     }
 }
