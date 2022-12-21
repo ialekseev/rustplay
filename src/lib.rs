@@ -387,6 +387,29 @@ fn find_longest_common_prefix_string<'a>(vec: &Vec<&'a str>) -> &'a str {
     (1..vec.len()).fold(vec[0], |prx, i| common_prefix(prx, vec[i]))
 }
 
+// Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string has correct brackets.
+fn has_string_valid_brackets(str: &str) -> bool {
+    const OPEN_BRACKETS: &str = "({[";
+    const CLOSE_BRACKETS: &str = ")}]";
+    let mut stack = Vec::new();
+
+    for char in str.chars() {
+        if OPEN_BRACKETS.contains(|c| c == char) {
+            stack.push(char)
+        } else if CLOSE_BRACKETS.contains(|c| c == char) {
+            let popped = stack.pop();
+            match (popped, char) {
+                (Some('('), ')') | (Some('{'), '}') | (Some('['), ']') => continue,
+                _ => return false,
+            }
+        } else {
+            panic!("the input string should only contain brackets!")
+        }
+    }
+
+    return true;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -776,5 +799,15 @@ mod tests {
             ""
         );
         assert_eq!(find_longest_common_prefix_string(&vec![]), "");
+    }
+
+    #[test]
+    fn test_has_string_valid_brackets() {
+        assert_eq!(has_string_valid_brackets("()[]{}"), true);
+        assert_eq!(has_string_valid_brackets("{([[]])}"), true);
+        assert_eq!(has_string_valid_brackets("()"), true);
+        assert_eq!(has_string_valid_brackets(""), true);
+        assert_eq!(has_string_valid_brackets("{([)}"), false);
+        assert_eq!(has_string_valid_brackets("(]"), false);
     }
 }
