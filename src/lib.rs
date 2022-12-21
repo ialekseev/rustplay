@@ -371,10 +371,10 @@ fn reverse_number(mut num: i32) -> i32 {
 fn find_longest_common_prefix_string<'a>(vec: &Vec<&'a str>) -> &'a str {
     fn common_prefix<'a>(s1: &'a str, s2: &'a str) -> &'a str {
         let prefix_end_index = s1
-            .bytes()
-            .zip(s2.bytes())
+            .chars()
+            .zip(s2.chars())
             .enumerate()
-            .find(|(_, (byte1, byte2))| byte1 != byte2)
+            .find(|(_, (char1, char2))| char1 != char2)
             .map(|(index, _)| index)
             .unwrap_or(usize::min(s1.len(), s2.len()));
         &s1[0..prefix_end_index]
@@ -384,7 +384,7 @@ fn find_longest_common_prefix_string<'a>(vec: &Vec<&'a str>) -> &'a str {
         return "";
     }
 
-    (1..vec.len()).fold(vec[0], |prefix, i| common_prefix(prefix, vec[i]))
+    (1..vec.len()).fold(vec[0], |prx, i| common_prefix(prx, vec[i]))
 }
 
 #[cfg(test)]
@@ -758,17 +758,23 @@ mod tests {
             find_longest_common_prefix_string(&vec!["abcd", "abc"]),
             "abc"
         );
-
         assert_eq!(
             find_longest_common_prefix_string(&vec!["abcd", "abcdef", "abc", "abcde"]),
             "abc"
         );
-
-        assert_eq!(find_longest_common_prefix_string(&vec!["abc"]), "abc");
-
+        assert_eq!(find_longest_common_prefix_string(&vec!["def"]), "def");
+        assert_eq!(
+            find_longest_common_prefix_string(&vec!["abcd", "abcd", "abcd"]),
+            "abcd"
+        );
+        assert_eq!(
+            find_longest_common_prefix_string(&vec!["a", "abc", "ab"]),
+            "a"
+        );
         assert_eq!(
             find_longest_common_prefix_string(&vec!["abc", "defg", "hij"]),
             ""
         );
+        assert_eq!(find_longest_common_prefix_string(&vec![]), "");
     }
 }
