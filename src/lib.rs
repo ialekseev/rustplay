@@ -410,6 +410,23 @@ fn has_string_valid_brackets(str: &str) -> bool {
     return stack.is_empty();
 }
 
+// Given a non-negative integer num, return the square root of num rounded down to the nearest integer.
+fn sqrt(num: i32) -> i32 {
+    assert!(num >= 0);
+
+    let mut left = 0;
+    let mut right = num;
+    while left < right {
+        let mid = (left + right + 1) / 2;
+        if mid * mid > num {
+            right = mid - 1;
+        } else {
+            left = mid;
+        }
+    }
+    right
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -813,5 +830,22 @@ mod tests {
         assert_eq!(has_string_valid_brackets("{"), false);
         assert_eq!(has_string_valid_brackets("}}"), false);
         assert_eq!(has_string_valid_brackets("{{"), false);
+    }
+
+    #[test]
+    fn test_sqrt() {
+        assert_eq!(sqrt(0), 0);
+        assert_eq!(sqrt(1), 1);
+        assert_eq!(sqrt(2), 1);
+        assert_eq!(sqrt(3), 1);
+        assert_eq!(sqrt(4), 2);
+        assert_eq!(sqrt(5), 2);
+        assert_eq!(sqrt(6), 2);
+        assert_eq!(sqrt(7), 2);
+        assert_eq!(sqrt(8), 2);
+        assert_eq!(sqrt(9), 3);
+        assert_eq!(sqrt(16), 4);
+        assert_eq!(sqrt(17), 4);
+        assert_eq!(sqrt(225), 15);
     }
 }
