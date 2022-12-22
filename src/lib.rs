@@ -811,5 +811,7 @@ mod tests {
         assert_eq!(has_string_valid_brackets("{]"), false);
         assert_eq!(has_string_valid_brackets("}"), false);
         assert_eq!(has_string_valid_brackets("{"), false);
+        assert_eq!(has_string_valid_brackets("}}"), false);
+        assert_eq!(has_string_valid_brackets("{{"), false);
     }
 }
