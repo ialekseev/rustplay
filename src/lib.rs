@@ -427,6 +427,24 @@ fn sqrt(num: i32) -> i32 {
     right
 }
 
+// Check whether provided strings are anagrams or not
+fn check_if_anagram_strings(s1: &str, s2: &str) -> bool {
+    let mut map1 = HashMap::new();
+    let mut map2 = HashMap::new();
+    
+    s1.chars()
+        .filter(|&c| c != ' ')
+        .zip(s2.chars().filter(|&c| c != ' '))
+        .for_each(|(char1, char2)| {
+            let count1 = map1.entry(char1.to_ascii_lowercase()).or_insert(0);
+            *count1 += 1;
+            let count2 = map2.entry(char2.to_ascii_lowercase()).or_insert(0);
+            *count2 += 1;
+        });
+
+    map1 == map2
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -847,5 +865,26 @@ mod tests {
         assert_eq!(sqrt(16), 4);
         assert_eq!(sqrt(17), 4);
         assert_eq!(sqrt(225), 15);
+    }
+
+    #[test]
+    fn test_check_if_anagram_strings() {
+        assert_eq!(
+            check_if_anagram_strings("New York Times", "monkeys write"),
+            true
+        );
+
+        assert_eq!(
+            check_if_anagram_strings("McDonald's restaurants", "Uncle Sam's standard rot"),
+            true
+        );
+
+        assert_eq!(check_if_anagram_strings("coronavirus", "carnivorous"), true);
+
+        assert_eq!(check_if_anagram_strings("daddy", "daddy"), true);
+        assert_eq!(check_if_anagram_strings("a", "a"), true);
+        assert_eq!(check_if_anagram_strings("", ""), true);
+        
+        assert_eq!(check_if_anagram_strings("daddy", "mummy"), false)
     }
 }
