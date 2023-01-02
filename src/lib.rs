@@ -431,7 +431,7 @@ fn sqrt(num: i32) -> i32 {
 fn check_if_anagram_strings(s1: &str, s2: &str) -> bool {
     let mut map1 = HashMap::new();
     let mut map2 = HashMap::new();
-    
+
     s1.chars()
         .filter(|&c| c != ' ')
         .zip(s2.chars().filter(|&c| c != ' '))
@@ -443,6 +443,16 @@ fn check_if_anagram_strings(s1: &str, s2: &str) -> bool {
         });
 
     map1 == map2
+}
+
+// Given a vector of n-1 distinct integers in the range of 1 to n, find the missing number in it in linear time.
+fn find_missing_number_in_vector(vec: &Vec<i32>) -> i32 {
+    let sum_vec: i32 = vec.iter().sum();
+
+    let n = (vec.len() + 1) as i32;
+    let sum_nat = n * (n + 1) / 2;
+
+    sum_nat - sum_vec
 }
 
 #[cfg(test)]
@@ -884,7 +894,15 @@ mod tests {
         assert_eq!(check_if_anagram_strings("daddy", "daddy"), true);
         assert_eq!(check_if_anagram_strings("a", "a"), true);
         assert_eq!(check_if_anagram_strings("", ""), true);
-        
+
         assert_eq!(check_if_anagram_strings("daddy", "mummy"), false)
+    }
+
+    #[test]
+    fn test_find_missing_number_in_vector() {
+        assert_eq!(find_missing_number_in_vector(&vec![1, 2, 3, 5, 6, 7]), 4);
+        assert_eq!(find_missing_number_in_vector(&vec![2, 3]), 1);
+        assert_eq!(find_missing_number_in_vector(&vec![1, 3]), 2);
+        assert_eq!(find_missing_number_in_vector(&vec![2]), 1);
     }
 }
