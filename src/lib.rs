@@ -455,6 +455,22 @@ fn find_missing_number_in_vector(vec: &Vec<i32>) -> i32 {
     sum_nat - sum_vec
 }
 
+// Given two integers, where n is non-negative, raise a value b to the power of n.
+fn pow(mut b: i32, mut n: i32) -> i32 {
+    let mut pow: i32 = 1;
+
+    while n > 0 {
+        if (n % 2) == 1 {
+            pow *= b;
+        }
+
+        n /= 2;
+        b *= b;
+    }
+
+    pow
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -904,5 +920,16 @@ mod tests {
         assert_eq!(find_missing_number_in_vector(&vec![2, 3]), 1);
         assert_eq!(find_missing_number_in_vector(&vec![1, 3]), 2);
         assert_eq!(find_missing_number_in_vector(&vec![2]), 1);
+    }
+
+    #[test]
+    fn test_pow() {
+        assert_eq!(pow(2, 4), 16);
+        assert_eq!(pow(2, 3), 8);
+        assert_eq!(pow(6, 3), 216);
+        assert_eq!(pow(-2, 10), 1024);
+        assert_eq!(pow(-3, 4), 81);
+        assert_eq!(pow(5, 0), 1);
+        assert_eq!(pow(-2, 3), -8);
     }
 }
