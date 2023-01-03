@@ -472,9 +472,7 @@ fn pow(mut b: i32, mut n: u32) -> i32 {
 }
 
 // Calculate nth Fibonacci number.
-fn fibonacci_number(n: i32) -> i32 {
-    assert!(n >= 0, "n must be >= 0");
-
+fn fibonacci_number(n: u32) -> u32 {
     if n <= 1 {
         return n;
     }
