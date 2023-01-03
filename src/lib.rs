@@ -471,6 +471,19 @@ fn pow(mut b: i32, mut n: u32) -> i32 {
     pow
 }
 
+// Calculate nth Fibonacci number.
+fn fibonacci_number(n: i32) -> i32 {
+    assert!(n >= 0, "n must be >= 0");
+
+    if n <= 1 {
+        return n;
+    }
+
+    (2..=n)
+        .fold((0, 1), |(prev, curr), _| (curr, prev + curr))
+        .1
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -929,6 +942,21 @@ mod tests {
         assert_eq!(pow(6, 3), 216);
         assert_eq!(pow(-2, 10), 1024);
         assert_eq!(pow(-3, 4), 81);
-        assert_eq!(pow(5, 0), 1);        
+        assert_eq!(pow(5, 0), 1);
+    }
+
+    #[test]
+    fn test_fibonacci_number() {
+        assert_eq!(fibonacci_number(0), 0);
+        assert_eq!(fibonacci_number(1), 1);
+        assert_eq!(fibonacci_number(2), 1);
+        assert_eq!(fibonacci_number(3), 2);
+        assert_eq!(fibonacci_number(4), 3);
+        assert_eq!(fibonacci_number(5), 5);
+        assert_eq!(fibonacci_number(6), 8);
+        assert_eq!(fibonacci_number(7), 13);
+        assert_eq!(fibonacci_number(8), 21);
+        assert_eq!(fibonacci_number(9), 34);
+        assert_eq!(fibonacci_number(10), 55);
     }
 }
