@@ -483,7 +483,7 @@ fn fibonacci_number(n: u32) -> u32 {
 }
 
 // Remove adjacent duplicate characters from a string
-fn remove_adjacent_duplicate_chars(str: String) -> String {
+fn remove_adjacent_duplicate_chars(str: &str) -> String {
     let mut prev_char: Option<char> = None;
 
     str.chars()
@@ -976,20 +976,14 @@ mod tests {
 
     #[test]
     fn test_remove_adjacent_duplicate_chars() {
-        assert_eq!(
-            remove_adjacent_duplicate_chars(String::from("aaabccccddde")),
-            "abcde"
-        );
+        assert_eq!(remove_adjacent_duplicate_chars("aaabccccddde"), "abcde");
 
-        assert_eq!(
-            remove_adjacent_duplicate_chars(String::from("abbbc")),
-            "abc"
-        );
+        assert_eq!(remove_adjacent_duplicate_chars("abbbc"), "abc");
 
-        assert_eq!(remove_adjacent_duplicate_chars(String::from("aaa")), "a");
+        assert_eq!(remove_adjacent_duplicate_chars("aaa"), "a");
 
-        assert_eq!(remove_adjacent_duplicate_chars(String::from("a")), "a");
+        assert_eq!(remove_adjacent_duplicate_chars("a"), "a");
 
-        assert_eq!(remove_adjacent_duplicate_chars(String::new()), "");
+        assert_eq!(remove_adjacent_duplicate_chars(""), "");
     }
 }
