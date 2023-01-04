@@ -498,6 +498,27 @@ fn remove_adjacent_duplicate_chars(str: &str) -> String {
         .collect()
 }
 
+// Check if a provided number is a prime number or not
+fn is_prime(n: u32) -> bool {
+    match n {
+        _ if n <= 1 => return false,
+        _ if n == 2 => return true,
+        _ if n % 2 == 0 => return false,
+        _ => (),
+    }
+
+    let sqrt = (n as f32).sqrt() as u32;
+    let mut i = 3;
+    while i <= sqrt {
+        if n % i == 0 {
+            return false;
+        }
+        i += 2;
+    }
+
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -981,5 +1002,23 @@ mod tests {
         assert_eq!(remove_adjacent_duplicate_chars("aaa"), "a");
         assert_eq!(remove_adjacent_duplicate_chars("a"), "a");
         assert_eq!(remove_adjacent_duplicate_chars(""), "");
+    }
+
+    #[test]
+    fn test_is_prime() {
+        assert_eq!(is_prime(0), false);
+        assert_eq!(is_prime(1), false);
+        assert_eq!(is_prime(2), true);
+        assert_eq!(is_prime(3), true);
+        assert_eq!(is_prime(4), false);
+        assert_eq!(is_prime(5), true);
+        assert_eq!(is_prime(6), false);
+        assert_eq!(is_prime(7), true);
+        assert_eq!(is_prime(8), false);
+        assert_eq!(is_prime(9), false);
+        assert_eq!(is_prime(10), false);
+        assert_eq!(is_prime(11), true);
+        assert_eq!(is_prime(12), false);
+        assert_eq!(is_prime(13), true);
     }
 }
