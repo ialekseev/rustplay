@@ -977,13 +977,9 @@ mod tests {
     #[test]
     fn test_remove_adjacent_duplicate_chars() {
         assert_eq!(remove_adjacent_duplicate_chars("aaabccccddde"), "abcde");
-
         assert_eq!(remove_adjacent_duplicate_chars("abbbc"), "abc");
-
         assert_eq!(remove_adjacent_duplicate_chars("aaa"), "a");
-
         assert_eq!(remove_adjacent_duplicate_chars("a"), "a");
-
         assert_eq!(remove_adjacent_duplicate_chars(""), "");
     }
 }
