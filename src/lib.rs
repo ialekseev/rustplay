@@ -522,6 +522,11 @@ fn is_prime(n: u32) -> bool {
     true
 }
 
+// Given an integer n, return true if it is a power of two. Otherwise, return false.
+fn power_of_2(n: u32) -> bool {
+    (n != 0) && (n & n - 1 == 0)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1023,5 +1028,18 @@ mod tests {
         assert_eq!(is_prime(11), true);
         assert_eq!(is_prime(12), false);
         assert_eq!(is_prime(13), true);
+    }
+
+    #[test]
+    fn test_power_of_2() {
+        assert_eq!(power_of_2(0), false);
+        assert_eq!(power_of_2(1), true);
+        assert_eq!(power_of_2(2), true);
+        assert_eq!(power_of_2(3), false);
+        assert_eq!(power_of_2(4), true);
+        assert_eq!(power_of_2(5), false);
+        assert_eq!(power_of_2(6), false);
+        assert_eq!(power_of_2(7), false);
+        assert_eq!(power_of_2(8), true);
     }
 }
