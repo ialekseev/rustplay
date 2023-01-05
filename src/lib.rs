@@ -501,15 +501,18 @@ fn remove_adjacent_duplicate_chars(str: &str) -> String {
 // Check if a provided number is a prime number or not
 fn is_prime(n: u32) -> bool {
     match n {
-        _ if n <= 1 => return false,
-        _ if n == 2 => return true,
-        _ if n % 2 == 0 => return false,
+        _ if n <= 1 => return false,     // prime num has to be > 1
+        _ if n == 2 => return true,      // 2 is prime num
+        _ if n % 2 == 0 => return false, //other even nums could not be prime
         _ => (),
     }
 
-    let sqrt = (n as f32).sqrt() as u32;
+    let sqrt_n = (n as f32).sqrt() as u32;
+
+    // iterate over odd numbers i=3,5,7... while i <= sqrt(n)
+    // if n is divisible by some i, then n is not prime num
     let mut i = 3;
-    while i <= sqrt {
+    while i <= sqrt_n {
         if n % i == 0 {
             return false;
         }
