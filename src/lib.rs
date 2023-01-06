@@ -522,7 +522,7 @@ fn is_prime(n: u32) -> bool {
     true
 }
 
-// Given an integer n, return true if it is a power of two. Otherwise, return false.
+// Given a non-negative integer n, return true if it is a power of two. Otherwise, return false.
 fn power_of_2(n: u32) -> bool {
     (n != 0) && (n & n - 1 == 0)
 }
