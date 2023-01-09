@@ -538,8 +538,8 @@ fn is_isomorphic_strings(s1: &str, s2: &str) -> bool {
     s1.chars()
         .zip(s2.chars())
         .all(|(c1, c2)| match (map1.get(&c1), map2.get(&c2)) {
-            (Some(&c2_from_map), None) if c2_from_map != c2 => false,
-            (None, Some(&c1_from_map)) if c1_from_map != c1 => false,
+            (Some(&c2_from_map1), None) if c2_from_map1 != c2 => false,
+            (None, Some(&c1_from_map2)) if c1_from_map2 != c1 => false,
             _ => {
                 map1.insert(c1, c2);
                 map2.insert(c2, c1);
