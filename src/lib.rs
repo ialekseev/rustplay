@@ -1066,15 +1066,15 @@ mod tests {
 
     #[test]
     fn test_is_isomorphic_strings() {            
-        assert_eq!(is_isomorphic_strings("abac", "zbzy"), true);
+        assert_eq!(is_isomorphic_strings("abcdae", "zbcdzy"), true);
         assert_eq!(is_isomorphic_strings("cat", "dog"), true);
         assert_eq!(is_isomorphic_strings("abc", "def"), true);
         assert_eq!(is_isomorphic_strings("a", "b"), true);
         assert_eq!(is_isomorphic_strings("aaa", "bbb"), true);
         assert_eq!(is_isomorphic_strings("aab", "aac"), true);
 
-        assert_eq!(is_isomorphic_strings("badc", "baba"), false);
-        assert_eq!(is_isomorphic_strings("baba", "badc"), false);
+        assert_eq!(is_isomorphic_strings("madc", "mama"), false);
+        assert_eq!(is_isomorphic_strings("mama", "madc"), false);
         assert_eq!(is_isomorphic_strings("aac", "abb"), false);
         assert_eq!(is_isomorphic_strings("abc", "abcd"), false);
         assert_eq!(is_isomorphic_strings("abcd", "abc"), false);
