@@ -548,20 +548,23 @@ fn is_isomorphic_strings(s1: &str, s2: &str) -> bool {
         })
 }
 
-// Check if vector contains any duplicates.
-fn contains_duplicate(vec: &mut Vec<i32>) -> bool {
+// Check if vector contains any duplicates. Using sort. time = O(n log n), space = O(1)
+fn contains_duplicate_1(vec: &mut Vec<i32>) -> bool {
     vec.sort();
     (1..vec.len()).any(|i| if vec[i] == vec[i - 1] { true } else { false })
+}
 
-    // let mut set = HashSet::new();
-    // vec.iter().any(|v| {
-    //     if set.contains(v) {
-    //         true
-    //     } else {
-    //         set.insert(v);
-    //         false
-    //     }
-    // })
+// Check if vector contains any duplicates. Using HashSet. time = O(n), space = O(n)
+fn contains_duplicate_2(vec: &Vec<i32>) -> bool {
+    let mut set = HashSet::new();
+    vec.iter().any(|v| {
+        if set.contains(v) {
+            true
+        } else {
+            set.insert(v);
+            false
+        }
+    })
 }
 
 #[cfg(test)]
@@ -1099,15 +1102,28 @@ mod tests {
     }
 
     #[test]
-    fn test_contains_duplicate() {
-        assert_eq!(contains_duplicate(&mut vec![1, 2, 3, 1]), true);
-        assert_eq!(contains_duplicate(&mut vec![1, 1]), true);
+    fn test_contains_duplicate_1() {
+        assert_eq!(contains_duplicate_1(&mut vec![1, 2, 3, 4, 2]), true);
+        assert_eq!(contains_duplicate_1(&mut vec![1, 1]), true);
         assert_eq!(
-            contains_duplicate(&mut vec![1, 1, 1, 3, 3, 4, 3, 2, 4, 2]),
+            contains_duplicate_1(&mut vec![2, 2, 2, 3, 3, 3, 3, 5, 4, 1, 6, 1]),
             true
         );
-        assert_eq!(contains_duplicate(&mut vec![1, 2, 3, 4]), false);
-        assert_eq!(contains_duplicate(&mut vec![1]), false);
-        assert_eq!(contains_duplicate(&mut vec![]), false);
+        assert_eq!(contains_duplicate_1(&mut vec![1, 2, 3, 4]), false);
+        assert_eq!(contains_duplicate_1(&mut vec![1]), false);
+        assert_eq!(contains_duplicate_1(&mut vec![]), false);
+    }
+
+    #[test]
+    fn test_contains_duplicate_2() {
+        assert_eq!(contains_duplicate_2(&vec![1, 2, 3, 4, 2]), true);
+        assert_eq!(contains_duplicate_2(&vec![1, 1]), true);
+        assert_eq!(
+            contains_duplicate_2(&vec![2, 2, 2, 3, 3, 3, 3, 5, 4, 1, 6, 1]),
+            true
+        );
+        assert_eq!(contains_duplicate_2(&vec![1, 2, 3, 4]), false);
+        assert_eq!(contains_duplicate_2(&vec![1]), false);
+        assert_eq!(contains_duplicate_2(&vec![]), false);
     }
 }
