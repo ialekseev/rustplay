@@ -548,6 +548,22 @@ fn is_isomorphic_strings(s1: &str, s2: &str) -> bool {
         })
 }
 
+// Check if vector contains any duplicates.
+fn contains_duplicate(vec: &mut Vec<i32>) -> bool {
+    vec.sort();
+    (1..vec.len()).any(|i| if vec[i] == vec[i - 1] { true } else { false })
+
+    // let mut set = HashSet::new();
+    // vec.iter().any(|v| {
+    //     if set.contains(v) {
+    //         true
+    //     } else {
+    //         set.insert(v);
+    //         false
+    //     }
+    // })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1065,7 +1081,7 @@ mod tests {
     }
 
     #[test]
-    fn test_is_isomorphic_strings() {            
+    fn test_is_isomorphic_strings() {
         assert_eq!(is_isomorphic_strings("abcdae", "zbcdzy"), true);
         assert_eq!(is_isomorphic_strings("cat", "dog"), true);
         assert_eq!(is_isomorphic_strings("abc", "def"), true);
@@ -1075,8 +1091,23 @@ mod tests {
 
         assert_eq!(is_isomorphic_strings("madc", "mama"), false);
         assert_eq!(is_isomorphic_strings("mama", "madc"), false);
+        assert_eq!(is_isomorphic_strings("acc", "abd"), false);
+
         assert_eq!(is_isomorphic_strings("aac", "abb"), false);
         assert_eq!(is_isomorphic_strings("abc", "abcd"), false);
         assert_eq!(is_isomorphic_strings("abcd", "abc"), false);
+    }
+
+    #[test]
+    fn test_contains_duplicate() {
+        assert_eq!(contains_duplicate(&mut vec![1, 2, 3, 1]), true);
+        assert_eq!(contains_duplicate(&mut vec![1, 1]), true);
+        assert_eq!(
+            contains_duplicate(&mut vec![1, 1, 1, 3, 3, 4, 3, 2, 4, 2]),
+            true
+        );
+        assert_eq!(contains_duplicate(&mut vec![1, 2, 3, 4]), false);
+        assert_eq!(contains_duplicate(&mut vec![1]), false);
+        assert_eq!(contains_duplicate(&mut vec![]), false);
     }
 }
