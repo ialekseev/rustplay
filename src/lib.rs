@@ -567,6 +567,23 @@ fn contains_duplicate_2(vec: &Vec<i32>) -> bool {
     })
 }
 
+// Given an integer non-empty vector, find the peak element in it. A peak element is an element that is greater than its neighbors.
+fn find_peak_number(vec: &Vec<i32>) -> i32 {
+    fn find_peak(v: &Vec<i32>, left: usize, right: usize) -> i32 {
+        match (left + right) / 2 {
+            // if mid elem is greater than left and right neighbors, then we found peak elem:
+            m if (m == 0 || v[m] >= v[m - 1]) && (m == v.len() - 1 || v[m] >= v[m + 1]) => v[m],
+            // if elem to the left of mid is greater than mid, then search in the left sub-vec:
+            m if m != 0 && v[m - 1] > v[m] => find_peak(v, left, m - 1),
+            // otherwise, search in the right sub-vec:
+            m => find_peak(v, m + 1, right),
+        }
+    }
+
+    assert!(!vec.is_empty(), "the input vector must not be empty");
+    find_peak(vec, 0, vec.len() - 1)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1125,5 +1142,16 @@ mod tests {
         assert_eq!(contains_duplicate_2(&vec![1, 2, 3, 4]), false);
         assert_eq!(contains_duplicate_2(&vec![1]), false);
         assert_eq!(contains_duplicate_2(&vec![]), false);
+    }
+
+    #[test]
+    fn test_find_peak_number() {
+        assert_eq!(find_peak_number(&vec![7, 8, 9, 1, 4, 5]), 9);
+        assert_eq!(find_peak_number(&vec![7, 8, 9, 11, 14]), 14);
+        assert_eq!(find_peak_number(&vec![9, 7, 5, 4, 2, 1]), 9);
+        assert_eq!(find_peak_number(&vec![1, 2]), 2);
+        assert_eq!(find_peak_number(&vec![2, 1]), 2);
+        assert_eq!(find_peak_number(&vec![1, 1]), 1);
+        assert_eq!(find_peak_number(&vec![1]), 1);
     }
 }
