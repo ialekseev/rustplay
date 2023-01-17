@@ -594,7 +594,7 @@ fn add_binary_strings(s1: &str, s2: &str) -> String {
 
     let mut short_iter = short_str.chars().rev();
     let mut carry_1 = false;
-    let res: String = long_str
+    let mut res: String = long_str
         .chars()
         .rev()
         .map(|lchar| {
@@ -619,11 +619,10 @@ fn add_binary_strings(s1: &str, s2: &str) -> String {
         .collect();
 
     if carry_1 {
-        let r: String = res.chars().rev().collect();
-        "1".to_owned() + r.as_str()
-    } else {
-        res
+        res.push('1');
     }
+
+    res.chars().rev().collect()
 }
 
 #[cfg(test)]
@@ -1210,6 +1209,9 @@ mod tests {
 
         assert_eq!(add_binary_strings("1010", "1011"), "10101");
         assert_eq!(add_binary_strings("1011", "1010"), "10101");
+
+        assert_eq!(add_binary_strings("1001", "11"), "1100");
+        assert_eq!(add_binary_strings("11", "1001"), "1100");
 
         assert_eq!(add_binary_strings("111", "111"), "1110");
 
