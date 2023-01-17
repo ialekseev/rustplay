@@ -584,6 +584,53 @@ fn find_peak_number(vec: &Vec<i32>) -> i32 {
     find_peak(vec, 0, vec.len() - 1)
 }
 
+// Given two binary strings a and b, return their sum as a binary string.
+fn add_binary_strings(s1: &str, s2: &str) -> String {
+    let (long, short) = if s1.len() > s2.len() {
+        (s1, s2)
+    } else {
+        (s2, s1)
+    };
+
+    let mut short_iter = short.chars().rev();
+    let mut prev_1 = false;
+    let res: String = long
+        .chars()
+        .rev()
+        .map(|lchar| match (lchar, short_iter.next(), prev_1) {
+            ('0', Some('0'), false) => '0',
+            ('0', Some('0'), true) => {
+                prev_1 = false;
+                '1'
+            }
+            ('0', Some('1'), false) => '1',
+            ('0', Some('1'), true) => '0',
+            ('1', Some('0'), false) => '1',
+            ('1', Some('0'), true) => '0',
+            ('1', Some('1'), false) => {
+                prev_1 = true;
+                '0'
+            }
+            ('1', Some('1'), true) => '1',
+            ('0', None, false) => '0',
+            ('1', None, false) => '1',
+            ('0', None, true) => {
+                prev_1 = false;
+                '1'
+            }
+            ('1', None, true) => '0',
+            _ => panic!("incorrect input"),
+        })
+        .collect();
+
+    if prev_1 {
+        let r: String = res.chars().rev().collect();
+        "1".to_owned() + r.as_str()
+    } else {
+        res
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1153,5 +1200,12 @@ mod tests {
         assert_eq!(find_peak_number(&vec![2, 1]), 2);
         assert_eq!(find_peak_number(&vec![1, 1]), 1);
         assert_eq!(find_peak_number(&vec![1]), 1);
+    }
+
+    #[test]
+    fn test_add_binary_strings() {
+        assert_eq!(add_binary_strings("1", "10000"), "10001");
+        assert_eq!(add_binary_strings("11", "1"), "100");
+        assert_eq!(add_binary_strings("1010", "1011"), "10101");
     }
 }
