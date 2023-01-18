@@ -593,32 +593,32 @@ fn add_binary_strings(s1: &str, s2: &str) -> String {
     };
 
     let mut short_iter = short_str.chars().rev();
-    let mut carry_1 = false;
+    let mut carry = 0;
     let mut res: String = long_str
         .chars()
         .rev()
         .map(|lchar| {
-            let (char, carry) = match (lchar, short_iter.next(), carry_1) {
-                ('0', Some('0'), false) => ('0', false),
-                ('0', Some('0'), true) => ('1', false),
-                ('0', Some('1'), false) => ('1', false),
-                ('0', Some('1'), true) => ('0', true),
-                ('1', Some('0'), false) => ('1', false),
-                ('1', Some('0'), true) => ('0', true),
-                ('1', Some('1'), false) => ('0', true),
-                ('1', Some('1'), true) => ('1', true),
-                ('0', None, false) => ('0', false),
-                ('1', None, false) => ('1', false),
-                ('0', None, true) => ('1', false),
-                ('1', None, true) => ('0', true),
+            let (char, car) = match (lchar, short_iter.next(), carry) {
+                ('0', Some('0'), 0) => ('0', 0),
+                ('0', Some('0'), 1) => ('1', 0),
+                ('0', Some('1'), 0) => ('1', 0),
+                ('0', Some('1'), 1) => ('0', 1),
+                ('1', Some('0'), 0) => ('1', 0),
+                ('1', Some('0'), 1) => ('0', 1),
+                ('1', Some('1'), 0) => ('0', 1),
+                ('1', Some('1'), 1) => ('1', 1),
+                ('0', None, 0) => ('0', 0),
+                ('1', None, 0) => ('1', 0),
+                ('0', None, 1) => ('1', 0),
+                ('1', None, 1) => ('0', 1),
                 _ => panic!("incorrect input"),
             };
-            carry_1 = carry;
+            carry = car;
             char
         })
         .collect();
 
-    if carry_1 {
+    if carry == 1 {
         res.push('1');
     }
 
