@@ -1246,7 +1246,11 @@ mod tests {
             assert_eq!(is_ugly_number(n), true);
         });
 
-        vec![-1, 0, 7, 11, 13].iter().for_each(|&n| {
+        vec![
+            -1, 0, 7, 11, 13, 14, 17, 19, 21, 22, 23, 26, 28, 29, 33, 34, 35, 37, 38, 39, 41, 42,
+        ]
+        .iter()
+        .for_each(|&n| {
             assert_eq!(is_ugly_number(n), false);
         });
     }
