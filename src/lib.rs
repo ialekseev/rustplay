@@ -625,6 +625,19 @@ fn add_binary_strings(s1: &str, s2: &str) -> String {
     res.chars().rev().collect()
 }
 
+// Check if the number is ugly (an ugly number is a positive integer whose prime factors are limited to 2, 3, and 5)
+fn is_ugly_number(mut n: i32) -> bool {
+    while n > 1 {
+        match n {
+            _ if n % 2 == 0 => n /= 2,
+            _ if n % 3 == 0 => n /= 3,
+            _ if n % 5 == 0 => n /= 5,
+            _ => return false,
+        }
+    }
+    return n > 0;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1218,5 +1231,23 @@ mod tests {
         assert_eq!(add_binary_strings("1", "1"), "10");
         assert_eq!(add_binary_strings("1", "0"), "1");
         assert_eq!(add_binary_strings("0", "0"), "0");
+
+        assert_eq!(add_binary_strings("001", "1"), "010");
+        assert_eq!(add_binary_strings("001", "1000"), "1001");
+    }
+
+    #[test]
+    fn test_is_ugly_number() {
+        vec![
+            1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 25, 27, 30, 32, 36, 40, 45, 48, 50,
+        ]
+        .iter()
+        .for_each(|&n| {
+            assert_eq!(is_ugly_number(n), true);
+        });
+
+        vec![-1, 0, 7, 11, 13].iter().for_each(|&n| {
+            assert_eq!(is_ugly_number(n), false);
+        });
     }
 }
