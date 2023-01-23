@@ -635,7 +635,7 @@ fn is_ugly_number(mut n: i32) -> bool {
             _ => return false,
         }
     }
-    return n > 0;
+    return n == 1;
 }
 
 #[cfg(test)]
