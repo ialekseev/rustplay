@@ -638,6 +638,18 @@ fn is_ugly_number(mut n: i32) -> bool {
     return n == 1;
 }
 
+// Given a string str, find the first non-repeating character in it.
+fn find_first_unique_char(str: &str) -> Option<char> {
+    let mut map = HashMap::new();
+
+    str.chars().for_each(|c| {
+        let count = map.entry(c).or_insert(0u8);
+        *count += 1;
+    });
+
+    str.chars().find(|c| map.get(c) == Some(&1))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1253,5 +1265,15 @@ mod tests {
         .for_each(|&n| {
             assert_eq!(is_ugly_number(n), false);
         });
+    }
+
+    #[test]
+    fn test_find_first_unique_char() {
+        assert_eq!(find_first_unique_char("yesterday"), Some('s'));
+        assert_eq!(find_first_unique_char("ifeelfine"), Some('l'));
+        assert_eq!(find_first_unique_char("ob-la-di,ob-la-da"), Some('i'));
+        assert_eq!(find_first_unique_char("help!"), Some('h'));
+        assert_eq!(find_first_unique_char("!"), Some('!'));
+        assert_eq!(find_first_unique_char("help!help!"), None);
     }
 }
