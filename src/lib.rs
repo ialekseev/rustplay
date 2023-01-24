@@ -640,11 +640,10 @@ fn is_ugly_number(mut n: i32) -> bool {
 
 // Given a string str, find the first non-repeating character in it.
 fn find_first_unique_char(str: &str) -> Option<char> {
-    let mut map = HashMap::new();
-
-    str.chars().for_each(|c| {
-        let count = map.entry(c).or_insert(0u8);
+    let map = str.chars().fold(HashMap::new(), |mut map, ch| {
+        let count = map.entry(ch).or_insert(0u8);
         *count += 1;
+        map
     });
 
     str.chars().find(|c| map.get(c) == Some(&1))
