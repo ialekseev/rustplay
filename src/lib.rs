@@ -1299,8 +1299,12 @@ mod tests {
 
     #[test]
     fn test_find_pivot_number() {
-        assert_eq!(find_pivot_number(8), Some(6));
         assert_eq!(find_pivot_number(1), Some(1));
+        assert_eq!(find_pivot_number(8), Some(6));
+        assert_eq!(find_pivot_number(49), Some(35));
+
+        assert_eq!(find_pivot_number(2), None);
+        assert_eq!(find_pivot_number(3), None);
         assert_eq!(find_pivot_number(4), None);
     }
 }
