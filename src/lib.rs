@@ -649,6 +649,27 @@ fn find_first_unique_char(str: &str) -> Option<char> {
     str.chars().find(|c| map.get(c) == Some(&1))
 }
 
+// Given a positive integer n, find the pivot integer x such that:
+// The sum of all elements between 1 and x inclusively equals the sum of all elements between x and n inclusively.
+fn find_pivot_number(n: u32) -> Option<u32> {
+    let sum = n * (n + 1) / 2;
+    let q = (sum as f32).sqrt() as u32;
+    (q * q == sum).then(|| q)
+
+    // let sum: u32 = n * (n + 1) / 2;
+
+    // let mut left_sum = 0;
+    // (1..=n).find_map(|e| {
+    //     let right_sum = sum - left_sum;
+    //     left_sum += e;
+    //     if right_sum == left_sum {
+    //         Some(e)
+    //     } else {
+    //         None
+    //     }
+    // })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1274,5 +1295,12 @@ mod tests {
         assert_eq!(find_first_unique_char("help!"), Some('h'));
         assert_eq!(find_first_unique_char("!"), Some('!'));
         assert_eq!(find_first_unique_char("help!help!"), None);
+    }
+
+    #[test]
+    fn test_find_pivot_number() {
+        assert_eq!(find_pivot_number(8), Some(6));
+        assert_eq!(find_pivot_number(1), Some(1));
+        assert_eq!(find_pivot_number(4), None);
     }
 }
