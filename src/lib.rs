@@ -659,7 +659,7 @@ fn find_pivot_number(n: u32) -> Option<u32> {
     // let sum: u32 = n * (n + 1) / 2;
 
     // let mut left_sum = 0;
-    // (1..=n).find_map(|e| {
+    // (0..=n).find_map(|e| {
     //     let right_sum = sum - left_sum;
     //     left_sum += e;
     //     if right_sum == left_sum {
@@ -1299,6 +1299,7 @@ mod tests {
 
     #[test]
     fn test_find_pivot_number() {
+        assert_eq!(find_pivot_number(0), Some(0));
         assert_eq!(find_pivot_number(1), Some(1));
         assert_eq!(find_pivot_number(8), Some(6));
         assert_eq!(find_pivot_number(49), Some(35));
