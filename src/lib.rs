@@ -649,12 +649,12 @@ fn find_first_unique_char(str: &str) -> Option<char> {
     str.chars().find(|c| map.get(c) == Some(&1))
 }
 
-// Given a positive integer n, find the pivot integer x such that:
-// The sum of all elements between 1 and x inclusively equals the sum of all elements between x and n inclusively.
+// Given a non-negative integer n, find the pivot integer p such that:
+// The sum of all elements between 1 and p inclusively equals the sum of all elements between p and n inclusively.
 fn find_pivot_number(n: u32) -> Option<u32> {
     let sum = n * (n + 1) / 2;
-    let q = (sum as f32).sqrt() as u32;
-    (q * q == sum).then(|| q)
+    let p = (sum as f32).sqrt() as u32;
+    (p * p == sum).then(|| p)
 
     // let sum: u32 = n * (n + 1) / 2;
 
