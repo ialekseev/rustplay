@@ -1336,5 +1336,6 @@ mod tests {
         assert_eq!(find_common_factors(5, 10), vec![1, 5]);
         assert_eq!(find_common_factors(10, 10), vec![1, 2, 5, 10]);
         assert_eq!(find_common_factors(1, 1), vec![1]);
+        assert_eq!(find_common_factors(5, 3), vec![1]);
     }
 }
