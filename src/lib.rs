@@ -670,6 +670,26 @@ fn find_pivot_number(n: u32) -> Option<u32> {
     // })
 }
 
+// Given two positive integers a and b, return common factors of a and b.
+fn find_common_factors(a: u32, b: u32) -> Vec<u32> {
+    assert!(a > 0 && b > 0, "a & b must be positive");
+
+    fn gcd(mut a: u32, mut b: u32) -> u32 {
+        while a != b {
+            if a > b {
+                a = a - b;
+            } else {
+                b = b - a;
+            }
+        }
+        a
+    }
+
+    (1..=gcd(a, b))
+        .filter(|n| a % n == 0 && b % n == 0)
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1307,5 +1327,14 @@ mod tests {
         assert_eq!(find_pivot_number(2), None);
         assert_eq!(find_pivot_number(3), None);
         assert_eq!(find_pivot_number(4), None);
+    }
+
+    #[test]
+    fn test_find_common_factors() {
+        assert_eq!(find_common_factors(18, 6), vec![1, 2, 3, 6]);
+        assert_eq!(find_common_factors(252, 105), vec![1, 3, 7, 21]);
+        assert_eq!(find_common_factors(5, 10), vec![1, 5]);
+        assert_eq!(find_common_factors(10, 10), vec![1, 2, 5, 10]);
+        assert_eq!(find_common_factors(1, 1), vec![1]);
     }
 }
