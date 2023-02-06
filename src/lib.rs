@@ -1355,9 +1355,9 @@ mod tests {
 
     #[test]
     fn test_form_largest_number() {
-        assert_eq!(form_largest_number(&mut vec![3, 30, 34, 5, 9]), "9534330");
-        assert_eq!(form_largest_number(&mut vec![10, 2]), "210");
+        assert_eq!(form_largest_number(&mut vec![40, 45, 4, 5, 8]), "8545440");
         assert_eq!(form_largest_number(&mut vec![0, 1, 2, 3]), "3210");
+        assert_eq!(form_largest_number(&mut vec![10, 5]), "510");
         assert_eq!(form_largest_number(&mut vec![1]), "1");
         assert_eq!(form_largest_number(&mut vec![0]), "0");
         assert_eq!(form_largest_number(&mut vec![0, 0]), "0");
