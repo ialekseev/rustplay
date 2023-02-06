@@ -690,6 +690,20 @@ fn find_common_factors(a: u32, b: u32) -> Vec<u32> {
         .collect()
 }
 
+// Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+fn form_largest_number(vec: &mut Vec<u32>) -> String {
+    vec.sort_by(|a, b| {
+        (b.to_string() + a.to_string().as_str()).cmp(&(a.to_string() + b.to_string().as_str()))
+    });
+
+    if vec[0] == 0 {
+        String::from("0")
+    } else {
+        vec.iter()
+            .fold(String::from(""), |acc, x| acc + x.to_string().as_str())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1337,5 +1351,15 @@ mod tests {
         assert_eq!(find_common_factors(10, 10), vec![1, 2, 5, 10]);
         assert_eq!(find_common_factors(1, 1), vec![1]);
         assert_eq!(find_common_factors(5, 3), vec![1]);
+    }
+
+    #[test]
+    fn test_form_largest_number() {
+        assert_eq!(form_largest_number(&mut vec![3, 30, 34, 5, 9]), "9534330");
+        assert_eq!(form_largest_number(&mut vec![10, 2]), "210");
+        assert_eq!(form_largest_number(&mut vec![0, 1, 2, 3]), "3210");
+        assert_eq!(form_largest_number(&mut vec![1]), "1");
+        assert_eq!(form_largest_number(&mut vec![0]), "0");
+        assert_eq!(form_largest_number(&mut vec![0, 0]), "0");
     }
 }
