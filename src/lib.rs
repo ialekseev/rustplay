@@ -446,6 +446,7 @@ fn check_if_anagram_strings(s1: &str, s2: &str) -> bool {
 }
 
 // Given a vector of n-1 distinct integers in the range of 1 to n, find the missing number in it in linear time.
+// See similar: `find_missing_numbers_in_vector`
 fn find_missing_number_in_vector(vec: &Vec<i32>) -> i32 {
     let sum_vec: i32 = vec.iter().sum();
 
@@ -702,6 +703,21 @@ fn form_largest_number(vec: &mut Vec<u32>) -> String {
         vec.iter()
             .fold(String::from(""), |acc, x| acc + x.to_string().as_str())
     }
+}
+
+// Given a vector vec of n integers where vec[i] is in the range [1, n], return a vector of all the integers in the range [1, n] that do not appear in vec.
+// See similar: `find_missing_number_in_vector`
+fn find_missing_numbers_in_vector(vec: &mut Vec<i32>) -> Vec<i32> {
+    for i in 0..vec.len() {
+        let num = vec[i];
+        let corr_index = (num.abs() - 1) as usize;
+        vec[corr_index] = -1 * vec[corr_index].abs();
+    }
+
+    vec.iter()
+        .enumerate()
+        .filter_map(|(i, &num)| if num > 0 { Some((i + 1) as i32) } else { None })
+        .collect()
 }
 
 #[cfg(test)]
@@ -1361,5 +1377,24 @@ mod tests {
         assert_eq!(form_largest_number(&mut vec![1]), "1");
         assert_eq!(form_largest_number(&mut vec![0]), "0");
         assert_eq!(form_largest_number(&mut vec![0, 0]), "0");
+    }
+
+    #[test]
+    fn test_find_missing_numbers() {
+        assert_eq!(
+            find_missing_numbers_in_vector(&mut vec![6, 3, 3, 2, 1, 1]),
+            vec![4, 5]
+        );
+        assert_eq!(
+            find_missing_numbers_in_vector(&mut vec![1, 1, 3, 4, 5]),
+            vec![2]
+        );
+
+        assert_eq!(find_missing_numbers_in_vector(&mut vec![1, 1]), vec![2]);
+        assert_eq!(
+            find_missing_numbers_in_vector(&mut vec![1, 2, 3, 4, 5]),
+            vec![]
+        );
+        assert_eq!(find_missing_numbers_in_vector(&mut vec![1]), vec![]);
     }
 }
